@@ -1,0 +1,8 @@
+.git
+.github
+.idea
+.vscode
+/tests
+/scratch
+/node_modules
+capture_all.js
