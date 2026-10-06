@@ -153,16 +153,37 @@
                     <label for="receipt" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
                         Upload Payment Receipt / Proof Slip *
                     </label>
-                    <div class="p-4 border-2 border-dashed border-slate-300 rounded-2xl hover:border-indigo-400 transition bg-slate-50/50">
+                    <div class="relative p-5 border-2 border-dashed border-slate-300 hover:border-indigo-500 rounded-2xl transition bg-slate-50/50 hover:bg-indigo-50/20 group text-center cursor-pointer">
                         <input
                             type="file"
                             name="receipt"
                             id="receipt"
                             required
                             accept="image/*,application/pdf"
-                            class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 cursor-pointer"
+                            onchange="previewReceiptFile(this)"
+                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                         >
-                        <p class="text-[11px] text-slate-400 mt-1.5">Upload a clear screenshot, photo, or PDF of your transfer receipt (max 5MB).</p>
+                        <div id="receipt-upload-prompt" class="space-y-1.5">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto group-hover:scale-110 transition">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                </svg>
+                            </div>
+                            <div class="text-xs font-bold text-slate-700">
+                                <span class="text-indigo-600 underline">Click to browse file</span> or drag & drop receipt here
+                            </div>
+                            <p class="text-[11px] text-slate-400">PNG, JPG, or PDF (up to 5MB maximum)</p>
+                        </div>
+                        <div id="receipt-preview-box" class="hidden flex items-center justify-center gap-3 pt-1">
+                            <div id="receipt-thumb-container" class="w-12 h-12 rounded-lg bg-slate-200 overflow-hidden shrink-0 flex items-center justify-center text-slate-500 text-xs">
+                                <img id="receipt-preview-img" src="#" alt="Preview" class="hidden w-full h-full object-cover">
+                                <span id="receipt-file-icon">📄</span>
+                            </div>
+                            <div class="text-left text-xs">
+                                <div id="receipt-file-name" class="font-bold text-slate-800 truncate max-w-[220px]">file.png</div>
+                                <div id="receipt-file-size" class="text-[11px] text-slate-400">0 KB</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -235,6 +256,40 @@
             document.getElementById('bill_type').value = option.dataset.type || '';
             if (option.dataset.property && document.getElementById('property_id')) {
                 document.getElementById('property_id').value = option.dataset.property;
+            }
+        }
+    }
+
+    function previewReceiptFile(input) {
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            const prompt = document.getElementById('receipt-upload-prompt');
+            const previewBox = document.getElementById('receipt-preview-box');
+            const nameEl = document.getElementById('receipt-file-name');
+            const sizeEl = document.getElementById('receipt-file-size');
+
+            if (prompt) prompt.classList.add('hidden');
+            if (previewBox) previewBox.classList.remove('hidden');
+            if (nameEl) nameEl.textContent = file.name;
+            if (sizeEl) sizeEl.textContent = (file.size / 1024).toFixed(1) + ' KB';
+
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('receipt-preview-img');
+                    const icon = document.getElementById('receipt-file-icon');
+                    if (img) {
+                        img.src = e.target.result;
+                        img.classList.remove('hidden');
+                    }
+                    if (icon) icon.classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                const img = document.getElementById('receipt-preview-img');
+                const icon = document.getElementById('receipt-file-icon');
+                if (img) img.classList.add('hidden');
+                if (icon) icon.classList.remove('hidden');
             }
         }
     }

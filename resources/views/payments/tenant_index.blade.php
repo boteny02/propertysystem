@@ -14,7 +14,7 @@
         </div>
 
         <div>
-            <a href="{{ route('payments.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition">
+            <a href="{{ route('payments.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition cursor-pointer">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
@@ -37,7 +37,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Channel 1: Bank Transfer Details -->
-            <div class="p-5 rounded-2xl bg-gradient-to-br from-slate-900 to-indigo-950 text-white space-y-4 shadow-sm relative overflow-hidden">
+            <div class="p-6 rounded-2xl bg-gradient-to-br from-slate-900 to-indigo-950 text-white space-y-4 shadow-sm relative overflow-hidden">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <div class="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-300">
@@ -63,10 +63,11 @@
                         <span class="text-slate-400">Account Number:</span>
                         <div class="flex items-center gap-2">
                             <code class="text-amber-300 font-mono text-sm font-bold">{{ $bankDetails['account_number'] }}</code>
-                            <button onclick="navigator.clipboard.writeText('{{ $bankDetails['account_number'] }}'); alert('Account number copied!');" class="p-1 rounded bg-white/10 hover:bg-white/20 text-slate-300 transition" title="Copy Account Number">
+                            <button type="button" onclick="copyToClipboard('{{ $bankDetails['account_number'] }}', this)" data-copied-text="✓ Copied" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-slate-300 text-xs transition cursor-pointer flex items-center gap-1" title="Copy Account Number">
                                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                                 </svg>
+                                <span>Copy</span>
                             </button>
                         </div>
                     </div>
@@ -76,13 +77,13 @@
                     </div>
                 </div>
 
-                <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 text-[11px] text-slate-300 leading-relaxed">
+                <div class="p-3 rounded-xl bg-white/5 border border-white/10 text-[11px] text-slate-300 leading-relaxed">
                     💡 <strong>Notice:</strong> {{ $bankDetails['instructions'] }}
                 </div>
             </div>
 
             <!-- Channel 2: Cryptocurrency Payment Wallets -->
-            <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-950 to-slate-900 text-white space-y-4 shadow-sm">
+            <div class="p-6 rounded-2xl bg-gradient-to-br from-indigo-950 to-slate-900 text-white space-y-4 shadow-sm">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <div class="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-300">
@@ -98,49 +99,52 @@
                 <!-- Crypto Wallets List -->
                 <div class="space-y-2.5 pt-1 text-xs">
                     <!-- USDT TRC-20 -->
-                    <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                    <div class="p-3 rounded-xl bg-white/5 border border-white/10 space-y-1">
                         <div class="flex items-center justify-between">
                             <span class="font-bold text-emerald-300">{{ $cryptoDetails['usdt_trc20']['name'] }}</span>
                             <span class="text-[10px] text-slate-400">{{ $cryptoDetails['usdt_trc20']['network'] }}</span>
                         </div>
                         <div class="flex items-center justify-between gap-2">
                             <code class="text-[11px] text-slate-200 font-mono break-all">{{ $cryptoDetails['usdt_trc20']['address'] }}</code>
-                            <button onclick="navigator.clipboard.writeText('{{ $cryptoDetails['usdt_trc20']['address'] }}'); alert('USDT TRC20 address copied!');" class="p-1 rounded bg-white/10 hover:bg-white/20 text-slate-300 shrink-0" title="Copy Address">
+                            <button type="button" onclick="copyToClipboard('{{ $cryptoDetails['usdt_trc20']['address'] }}', this)" data-copied-text="✓ Copied" class="px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-slate-300 text-xs shrink-0 transition cursor-pointer flex items-center gap-1" title="Copy Address">
                                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                                 </svg>
+                                <span>Copy</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- Bitcoin -->
-                    <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                    <div class="p-3 rounded-xl bg-white/5 border border-white/10 space-y-1">
                         <div class="flex items-center justify-between">
                             <span class="font-bold text-amber-300">{{ $cryptoDetails['bitcoin']['name'] }}</span>
                             <span class="text-[10px] text-slate-400">{{ $cryptoDetails['bitcoin']['network'] }}</span>
                         </div>
                         <div class="flex items-center justify-between gap-2">
                             <code class="text-[11px] text-slate-200 font-mono break-all">{{ $cryptoDetails['bitcoin']['address'] }}</code>
-                            <button onclick="navigator.clipboard.writeText('{{ $cryptoDetails['bitcoin']['address'] }}'); alert('Bitcoin address copied!');" class="p-1 rounded bg-white/10 hover:bg-white/20 text-slate-300 shrink-0" title="Copy Address">
+                            <button type="button" onclick="copyToClipboard('{{ $cryptoDetails['bitcoin']['address'] }}', this)" data-copied-text="✓ Copied" class="px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-slate-300 text-xs shrink-0 transition cursor-pointer flex items-center gap-1" title="Copy Address">
                                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                                 </svg>
+                                <span>Copy</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- Ethereum & USDT ERC20 -->
-                    <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                    <div class="p-3 rounded-xl bg-white/5 border border-white/10 space-y-1">
                         <div class="flex items-center justify-between">
                             <span class="font-bold text-indigo-300">Ethereum / USDT (ERC-20)</span>
                             <span class="text-[10px] text-slate-400">Ethereum Network</span>
                         </div>
                         <div class="flex items-center justify-between gap-2">
                             <code class="text-[11px] text-slate-200 font-mono break-all">{{ $cryptoDetails['ethereum']['address'] }}</code>
-                            <button onclick="navigator.clipboard.writeText('{{ $cryptoDetails['ethereum']['address'] }}'); alert('Ethereum address copied!');" class="p-1 rounded bg-white/10 hover:bg-white/20 text-slate-300 shrink-0" title="Copy Address">
+                            <button type="button" onclick="copyToClipboard('{{ $cryptoDetails['ethereum']['address'] }}', this)" data-copied-text="✓ Copied" class="px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-slate-300 text-xs shrink-0 transition cursor-pointer flex items-center gap-1" title="Copy Address">
                                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                                 </svg>
+                                <span>Copy</span>
                             </button>
                         </div>
                     </div>
@@ -164,38 +168,41 @@
             </div>
         @else
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs">
+                <table class="w-full text-left text-xs min-w-[650px]">
                     <thead>
-                        <tr class="border-b border-slate-200 text-slate-400 font-semibold uppercase tracking-wider">
-                            <th class="py-3 px-3">Bill Title</th>
-                            <th class="py-3 px-3">Type</th>
-                            <th class="py-3 px-3">Amount</th>
-                            <th class="py-3 px-3">Due Date</th>
-                            <th class="py-3 px-3">Status</th>
-                            <th class="py-3 px-3 text-right">Action</th>
+                        <tr class="border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider bg-slate-50/50">
+                            <th class="py-3 px-4 whitespace-nowrap">Bill Title</th>
+                            <th class="py-3 px-4 whitespace-nowrap">Type</th>
+                            <th class="py-3 px-4 whitespace-nowrap">Amount</th>
+                            <th class="py-3 px-4 whitespace-nowrap">Due Date</th>
+                            <th class="py-3 px-4 whitespace-nowrap">Status</th>
+                            <th class="py-3 px-4 text-right whitespace-nowrap">Action</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         @foreach($unpaidBills as $bill)
                             <tr class="hover:bg-slate-50 transition">
-                                <td class="py-3.5 px-3 font-bold text-slate-900">{{ $bill->title }}</td>
-                                <td class="py-3.5 px-3 text-slate-600 font-medium">{{ $bill->bill_type }}</td>
-                                <td class="py-3.5 px-3 font-extrabold text-slate-900 text-sm">₦{{ number_format($bill->amount, 2) }}</td>
-                                <td class="py-3.5 px-3 text-rose-600 font-semibold">{{ $bill->due_date->format('M d, Y') }}</td>
-                                <td class="py-3.5 px-3">
+                                <td class="py-3.5 px-4 font-bold text-slate-900">{{ $bill->title }}</td>
+                                <td class="py-3.5 px-4 text-slate-600 font-medium whitespace-nowrap">{{ $bill->bill_type }}</td>
+                                <td class="py-3.5 px-4 font-extrabold text-slate-900 text-sm whitespace-nowrap">₦{{ number_format($bill->amount, 2) }}</td>
+                                <td class="py-3.5 px-4 text-rose-600 font-semibold whitespace-nowrap">{{ $bill->due_date->format('M d, Y') }}</td>
+                                <td class="py-3.5 px-4 whitespace-nowrap">
                                     @if($bill->status === 'pending_verification')
-                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200 whitespace-nowrap">
                                             Awaiting Verification
                                         </span>
                                     @else
-                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200">
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200 whitespace-nowrap">
                                             Unpaid
                                         </span>
                                     @endif
                                 </td>
-                                <td class="py-3.5 px-3 text-right">
-                                    <a href="{{ route('payments.create', ['bill_id' => $bill->id]) }}" class="inline-block px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition">
-                                        Pay This Bill &rarr;
+                                <td class="py-3.5 px-4 text-right whitespace-nowrap">
+                                    <a href="{{ route('payments.create', ['bill_id' => $bill->id]) }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition text-xs whitespace-nowrap shadow-xs">
+                                        <span>Pay This Bill</span>
+                                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                        </svg>
                                     </a>
                                 </td>
                             </tr>
@@ -219,48 +226,51 @@
             </div>
         @else
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs">
+                <table class="w-full text-left text-xs min-w-[700px]">
                     <thead>
-                        <tr class="border-b border-slate-200 text-slate-400 font-semibold uppercase tracking-wider">
-                            <th class="py-3 px-3">Date Paid</th>
-                            <th class="py-3 px-3">Bill Type</th>
-                            <th class="py-3 px-3">Amount</th>
-                            <th class="py-3 px-3">Payment Method</th>
-                            <th class="py-3 px-3">Reference / TxID</th>
-                            <th class="py-3 px-3">Status</th>
-                            <th class="py-3 px-3 text-right">Receipt Slip</th>
+                        <tr class="border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider bg-slate-50/50">
+                            <th class="py-3 px-4 whitespace-nowrap">Date Paid</th>
+                            <th class="py-3 px-4 whitespace-nowrap">Bill Type</th>
+                            <th class="py-3 px-4 whitespace-nowrap">Amount</th>
+                            <th class="py-3 px-4 whitespace-nowrap">Payment Method</th>
+                            <th class="py-3 px-4 whitespace-nowrap">Reference / TxID</th>
+                            <th class="py-3 px-4 whitespace-nowrap">Status</th>
+                            <th class="py-3 px-4 text-right whitespace-nowrap">Receipt Slip</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         @foreach($payments as $pay)
                             <tr class="hover:bg-slate-50 transition">
-                                <td class="py-3.5 px-3 text-slate-600 font-medium">{{ $pay->payment_date->format('M d, Y') }}</td>
-                                <td class="py-3.5 px-3 font-bold text-slate-900">{{ $pay->bill_type }}</td>
-                                <td class="py-3.5 px-3 font-extrabold text-slate-900 text-sm">₦{{ number_format($pay->amount, 2) }}</td>
-                                <td class="py-3.5 px-3 text-slate-600">{{ $pay->payment_method }}</td>
-                                <td class="py-3.5 px-3">
-                                    <code class="text-[11px] font-mono text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded max-w-[150px] truncate block" title="{{ $pay->transaction_reference }}">
+                                <td class="py-3.5 px-4 text-slate-600 font-medium whitespace-nowrap">{{ $pay->payment_date->format('M d, Y') }}</td>
+                                <td class="py-3.5 px-4 font-bold text-slate-900 whitespace-nowrap">{{ $pay->bill_type }}</td>
+                                <td class="py-3.5 px-4 font-extrabold text-slate-900 text-sm whitespace-nowrap">₦{{ number_format($pay->amount, 2) }}</td>
+                                <td class="py-3.5 px-4 text-slate-600 whitespace-nowrap">{{ $pay->payment_method }}</td>
+                                <td class="py-3.5 px-4">
+                                    <code class="text-[11px] font-mono text-slate-700 bg-slate-100 px-2 py-0.5 rounded max-w-[150px] truncate block" title="{{ $pay->transaction_reference }}">
                                         {{ $pay->transaction_reference }}
                                     </code>
                                 </td>
-                                <td class="py-3.5 px-3">
+                                <td class="py-3.5 px-4 whitespace-nowrap">
                                     @if($pay->status === 'verified')
-                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 whitespace-nowrap">
                                             ✓ Verified & Approved
                                         </span>
                                     @elseif($pay->status === 'pending')
-                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200 animate-pulse">
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200 whitespace-nowrap">
                                             ⌛ Pending Review
                                         </span>
                                     @else
-                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200">
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200 whitespace-nowrap">
                                             ✕ Rejected
                                         </span>
                                     @endif
                                 </td>
-                                <td class="py-3.5 px-3 text-right">
-                                    <a href="{{ route('payments.show', $pay) }}" class="inline-flex items-center gap-1 font-bold text-indigo-600 hover:text-indigo-800">
-                                        View Slip &rarr;
+                                <td class="py-3.5 px-4 text-right whitespace-nowrap">
+                                    <a href="{{ route('payments.show', $pay) }}" class="inline-flex items-center gap-1 font-bold text-indigo-600 hover:text-indigo-800 transition">
+                                        <span>View Slip</span>
+                                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                        </svg>
                                     </a>
                                 </td>
                             </tr>
@@ -269,7 +279,7 @@
                 </table>
             </div>
 
-            <div class="pt-2">
+            <div class="pt-4">
                 {{ $payments->links() }}
             </div>
         @endif

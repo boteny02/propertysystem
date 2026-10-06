@@ -93,15 +93,35 @@
                 <label for="photo" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
                     Attach Photo of Problem (Optional)
                 </label>
-                <div class="p-4 border-2 border-dashed border-slate-300 rounded-2xl hover:border-indigo-400 transition bg-slate-50/50">
+                <div class="relative p-5 border-2 border-dashed border-slate-300 hover:border-indigo-500 rounded-2xl transition bg-slate-50/50 hover:bg-indigo-50/20 group text-center cursor-pointer">
                     <input
                         type="file"
                         name="photo"
                         id="photo"
                         accept="image/*"
-                        class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 cursor-pointer"
+                        onchange="previewDefectPhoto(this)"
+                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                     >
-                    <p class="text-[11px] text-slate-400 mt-1">Clear photos help our technicians bring the right replacement tools and parts.</p>
+                    <div id="photo-upload-prompt" class="space-y-1.5">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto group-hover:scale-110 transition">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div class="text-xs font-bold text-slate-700">
+                            <span class="text-indigo-600 underline">Click to take or select photo</span> or drag image here
+                        </div>
+                        <p class="text-[11px] text-slate-400">Clear photos help technicians bring the right replacement tools and parts.</p>
+                    </div>
+                    <div id="photo-preview-box" class="hidden flex items-center justify-center gap-3 pt-1">
+                        <div class="w-14 h-14 rounded-lg bg-slate-200 overflow-hidden shrink-0 border border-slate-300">
+                            <img id="photo-preview-img" src="#" alt="Defect preview" class="w-full h-full object-cover">
+                        </div>
+                        <div class="text-left text-xs">
+                            <div id="photo-file-name" class="font-bold text-slate-800 truncate max-w-[220px]">photo.jpg</div>
+                            <div id="photo-file-size" class="text-[11px] text-slate-400">0 KB</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -114,4 +134,28 @@
         </form>
     </div>
 </div>
+
+<script>
+    function previewDefectPhoto(input) {
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            const prompt = document.getElementById('photo-upload-prompt');
+            const previewBox = document.getElementById('photo-preview-box');
+            const nameEl = document.getElementById('photo-file-name');
+            const sizeEl = document.getElementById('photo-file-size');
+            const img = document.getElementById('photo-preview-img');
+
+            if (prompt) prompt.classList.add('hidden');
+            if (previewBox) previewBox.classList.remove('hidden');
+            if (nameEl) nameEl.textContent = file.name;
+            if (sizeEl) sizeEl.textContent = (file.size / 1024).toFixed(1) + ' KB';
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                if (img) img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
 @endsection

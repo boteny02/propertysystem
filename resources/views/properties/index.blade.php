@@ -88,39 +88,39 @@
             <!-- Second row: Price range & Sort & Submit -->
             <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 text-xs">
                 <div class="flex items-center gap-2">
-                    <span class="font-semibold text-slate-600">Price Range:</span>
+                    <span class="font-bold text-slate-600">Price Range:</span>
                     <input
                         type="number"
                         name="min_price"
                         value="{{ request('min_price') }}"
                         placeholder="Min ₦"
-                        class="w-24 px-2.5 py-1.5 rounded-lg border border-slate-300 outline-none focus:border-indigo-500"
+                        class="w-28 px-3 py-1.5 rounded-xl border border-slate-300 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 bg-white"
                     >
-                    <span class="text-slate-400">-</span>
+                    <span class="text-slate-400 font-bold">-</span>
                     <input
                         type="number"
                         name="max_price"
                         value="{{ request('max_price') }}"
                         placeholder="Max ₦"
-                        class="w-24 px-2.5 py-1.5 rounded-lg border border-slate-300 outline-none focus:border-indigo-500"
+                        class="w-28 px-3 py-1.5 rounded-xl border border-slate-300 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 bg-white"
                     >
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <span class="font-semibold text-slate-600">Sort By:</span>
-                    <select name="sort" class="px-2.5 py-1.5 rounded-lg border border-slate-300 outline-none bg-white">
+                    <span class="font-bold text-slate-600">Sort By:</span>
+                    <select name="sort" class="px-3 py-1.5 rounded-xl border border-slate-300 outline-none bg-white focus:border-indigo-500">
                         <option value="newest" {{ request('sort') === 'newest' ? 'selected' : '' }}>Newest Listed</option>
                         <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>Price: Low to High</option>
                         <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>Price: High to Low</option>
                     </select>
 
-                    <button type="submit" class="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition cursor-pointer">
+                    <button type="submit" class="px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition shadow-xs cursor-pointer">
                         Apply Filters
                     </button>
 
                     @if(request()->anyFilled(['q', 'type', 'bedrooms', 'status', 'min_price', 'max_price', 'sort']))
-                        <a href="{{ route('properties.index') }}" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">
-                            Clear
+                        <a href="{{ route('properties.index') }}" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">
+                            Reset
                         </a>
                     @endif
                 </div>

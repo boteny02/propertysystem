@@ -290,6 +290,38 @@
                 menu.classList.toggle('hidden');
             });
         }
+
+        // Global polished clipboard copy with inline visual feedback
+        window.copyToClipboard = function(text, btnElement) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text);
+            } else {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                } catch (err) {
+                    console.error('Failed to copy', err);
+                }
+                textArea.remove();
+            }
+
+            if (btnElement) {
+                const originalHtml = btnElement.innerHTML;
+                const feedbackText = btnElement.getAttribute('data-copied-text') || '✓ Copied!';
+                btnElement.innerHTML = `<span class="text-[11px] font-bold text-emerald-300 animate-pulse whitespace-nowrap">${feedbackText}</span>`;
+                btnElement.disabled = true;
+                setTimeout(() => {
+                    btnElement.innerHTML = originalHtml;
+                    btnElement.disabled = false;
+                }, 1800);
+            }
+        };
     </script>
 </body>
 </html>

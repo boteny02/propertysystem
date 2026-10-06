@@ -19,15 +19,15 @@ $storageDirs = [
 ];
 
 foreach ($storageDirs as $dir) {
-    if (!is_dir($dir)) {
+    if (! is_dir($dir)) {
         @mkdir($dir, 0755, true);
     }
 }
 
 // Copy pre-seeded SQLite database to writable /tmp directory if not already created
 $tmpDb = '/tmp/database.sqlite';
-if (!file_exists($tmpDb)) {
-    $seededDb = __DIR__ . '/../database/database.sqlite';
+if (! file_exists($tmpDb)) {
+    $seededDb = __DIR__.'/../database/database.sqlite';
     if (file_exists($seededDb) && filesize($seededDb) > 0) {
         @copy($seededDb, $tmpDb);
     } else {
@@ -39,5 +39,11 @@ if (!file_exists($tmpDb)) {
 $_ENV['VERCEL'] = '1';
 $_SERVER['VERCEL'] = '1';
 
+// Enforce HTTPS server variables when behind Vercel or reverse proxy
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+    $_SERVER['HTTPS'] = 'on';
+    $_SERVER['SERVER_PORT'] = '443';
+}
+
 // Forward execution to standard Laravel public/index.php
-require __DIR__ . '/../public/index.php';
+require __DIR__.'/../public/index.php';
